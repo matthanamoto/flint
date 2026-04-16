@@ -1,0 +1,27 @@
+{
+  "name": "Flint — Spark better agents",
+  "short_name": "Flint",
+  "description": "Build powerful prompts for Claude Code — Creative, Strategic, Operational, and Technical tiers for solo operators.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "id": "flint-prompt-builder",
+  "icons": [
+    {
+      "src": "flint-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "flint-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [],
+  "categories": ["productivity", "utilities"]
+}

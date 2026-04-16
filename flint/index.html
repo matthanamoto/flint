@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Flint">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" type="image/svg+xml" href="flint-icon.svg">
+  <link rel="apple-touch-icon" href="flint-icon.svg">
+  <link rel="manifest" href="manifest.json">
+  <title>Flint</title>
+  <link rel="stylesheet" href="flint.css">
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <img src="flint-icon.svg" alt="Flint" class="brand-mark" width="44" height="44">
+    <h1><em>Flint</em></h1>
+    <span class="tagline">Spark better agents</span>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark theme" id="themeBtn" aria-label="Toggle theme"></button>
+  </div>
+
+  <!-- Value Blurb -->
+  <div class="value-blurb">
+    The right prompt is the spark &mdash; the difference between an agent that wanders and one that ships.
+    <strong>Flint</strong> helps you build <strong>better prompts faster</strong> across every mode you
+    work in: <em>ideator</em> when you're chasing a new idea, <em>CEO</em> when you need a call,
+    <em>operator</em> when you need the week's work shipped, <em>architect</em> when you're building
+    the foundation the business runs on.
+  </div>
+
+  <!-- Tier Selector -->
+  <div class="tier-bar">
+    <button class="tier-btn" data-tier="creative" onclick="setTier('creative')">
+      <span class="tier-name">Creative</span>
+      <span class="tier-desc">Pure ideation &mdash; diverge wide, cluster, sharpen</span>
+    </button>
+    <button class="tier-btn" data-tier="strategic" onclick="setTier('strategic')">
+      <span class="tier-name">Strategic</span>
+      <span class="tier-desc">CEO of your shop &mdash; direction, growth bets, trade-offs</span>
+    </button>
+    <button class="tier-btn active" data-tier="operational" onclick="setTier('operational')">
+      <span class="tier-name">Operational</span>
+      <span class="tier-desc">Running the shop &mdash; plan the week, ship customer work</span>
+    </button>
+    <button class="tier-btn" data-tier="technical" onclick="setTier('technical')">
+      <span class="tier-name">Technical</span>
+      <span class="tier-desc">Founding architect &mdash; build the foundation yourself</span>
+    </button>
+  </div>
+
+  <div class="tier-indicator" id="tierIndicator">
+    Building as: <strong id="tierLabel">Operational</strong> Builder
+  </div>
+
+  <!-- Main Grid -->
+  <div class="main-grid">
+
+    <!-- ============================================= -->
+    <!-- INPUT COLUMN                                   -->
+    <!-- ============================================= -->
+    <div class="input-col" id="buildCol" role="tabpanel" aria-labelledby="tabBuild">
+
+      <!-- Intent -->
+      <div class="card">
+        <div class="card-header">
+          Intent
+          <span class="badge">describe your goal</span>
+        </div>
+        <div class="field-group">
+          <textarea id="intentInput" rows="4" placeholder="What do you need to move the business forward this week?" oninput="onIntentChange()"></textarea>
+        </div>
+
+        <div class="intent-template-row" id="intentTemplateRow"></div>
+
+        <button class="supporting-toggle" id="supportingToggle" onclick="toggleSupporting()">
+          <span class="caret">&#9656;</span> Supporting material (optional)
+        </button>
+        <div class="supporting-body" id="supportingBody">
+          <div class="field-group" style="margin-top:8px">
+            <textarea id="supportingDump" rows="4" placeholder="Paste customer conversations, emails, notes to self, reference links..." oninput="onSupportingChange()"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Output -->
+      <div class="card">
+        <div class="card-header">Output</div>
+        <div class="field-group">
+          <label>What are you producing?</label>
+          <select id="outputType" onchange="onOutputTypeChange()"></select>
+          <input type="text" id="customOutputType" placeholder="Describe what you want to create..." oninput="onCustomOutputInput()" style="display:none;margin-top:6px">
+        </div>
+        <div class="field-group">
+          <label>Audience</label>
+          <textarea rows="1" id="audience" placeholder="Who will consume this?" oninput="onAudienceChange()"></textarea>
+        </div>
+      </div>
+
+      <!-- Guardrails (renamed from Details) -->
+      <div class="card" id="guardrailsCard">
+        <div class="card-header">
+          <span>Guardrails</span>
+          <span class="badge" id="guardrailHint" style="background:none;color:var(--text-muted);font-weight:400;font-size:11px;padding:0">What "done" looks like, deadline, who depends on this.</span>
+        </div>
+        <div id="tierFields"></div>
+      </div>
+
+      <!-- Agent actions — turn a prompt into action -->
+      <div class="card" id="agentActionsCard">
+        <div class="card-header">
+          <span>Agent actions</span>
+          <span class="badge">turn prompt into action</span>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;line-height:1.5">
+          Append directives so the agent doesn't just answer &mdash; it captures and proposes next moves.
+        </div>
+        <div class="checkbox-grid" style="grid-template-columns: 1fr;">
+          <label><input type="checkbox" id="agentActionSaveVault" onchange="onAgentActionChange()"> <span><strong>Save to AIOS Inbox</strong> &mdash; drop the output into <code>~/hanamoto_ai/Inbox/</code> as a dated <code>.md</code> file</span></label>
+          <label><input type="checkbox" id="agentActionNextSteps" onchange="onAgentActionChange()"> <span><strong>Propose next steps</strong> &mdash; after the deliverable, suggest 3-5 concrete actions and which agent/tool to run them</span></label>
+        </div>
+      </div>
+
+      <!-- Data Sources (shown for output types that need them) -->
+      <div class="card" id="sourcesCard">
+        <div class="card-header">Data Sources</div>
+
+        <div class="source-summary" id="sourceSummary"></div>
+
+        <button class="source-browse-toggle" id="sourceBrowseToggle" onclick="toggleSourceBrowse()">
+          <span class="caret">&#9656;</span> <span class="label">Browse data sources</span>
+        </button>
+        <div class="source-grid" id="sourceGrid"></div>
+
+        <div class="source-custom-row">
+          <input type="text" id="customSourceInput" placeholder="schema.table not in the list? Type it here" onkeydown="onCustomSourceKey(event)">
+          <button onclick="addCustomSource()">+ Add</button>
+        </div>
+      </div>
+
+      <!-- SKILL.md (Technical + SKILL.md only) -->
+      <div class="conditional-section" id="skillSection">
+        <div class="card">
+          <div class="card-header">
+            Skill metadata
+            <span class="badge">SKILL.md</span>
+          </div>
+          <div class="field-group">
+            <label>Skill name (lowercase-hyphenated, 1-64 chars)</label>
+            <input type="text" id="skillName" placeholder="e.g. churn-risk-detector" oninput="onSkillFieldChange()">
+          </div>
+          <div class="field-group">
+            <label>Trigger description (the only text agents see before activating)</label>
+            <textarea id="skillDesc" rows="2" placeholder="Use when identifying which customer segments are at risk of churning and what retention actions to take" oninput="onSkillFieldChange()"></textarea>
+          </div>
+          <div class="field-group">
+            <label>Modes (optional, comma-separated — enables sub-workflows)</label>
+            <input type="text" id="skillModes" placeholder="e.g. investigate, remediate, monitor" oninput="onSkillFieldChange()">
+          </div>
+          <div class="field-group">
+            <label>Companion files</label>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" id="skillCompScripts" onchange="onSkillFieldChange()"> <code>scripts/</code> — executable helpers</label>
+              <label><input type="checkbox" id="skillCompRefs"    onchange="onSkillFieldChange()"> <code>references/</code> — on-demand docs</label>
+              <label><input type="checkbox" id="skillCompAssets"  onchange="onSkillFieldChange()"> <code>assets/</code> — templates, fixtures</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Tool (Technical + AI Tool only) -->
+      <div class="conditional-section" id="toolSection">
+        <div class="card">
+          <div class="card-header">
+            AI tool
+            <span class="badge">tool spec</span>
+          </div>
+          <div class="field-group">
+            <label>Tool name (kebab-case)</label>
+            <input type="text" id="toolName" placeholder="e.g. data-quality-scorer" oninput="onToolFieldChange()">
+          </div>
+          <div class="field-group">
+            <label>Purpose — what does it do?</label>
+            <textarea rows="1" id="toolPurpose" placeholder="e.g. Scores datasets on completeness, freshness, and schema conformance" oninput="onToolFieldChange()"></textarea>
+          </div>
+          <div class="field-group">
+            <label>Language</label>
+            <select id="toolLanguage" onchange="onToolFieldChange()">
+              <option value="python">Python</option>
+              <option value="typescript">TypeScript (Node)</option>
+              <option value="shell">Shell (bash)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Invocation</label>
+            <select id="toolInvocation" onchange="onToolFieldChange()">
+              <option value="cli">CLI</option>
+              <option value="slash">Slash command</option>
+              <option value="skill">Skill-invoked</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Reference code path (optional)</label>
+            <textarea rows="1" id="toolRefPath" placeholder="e.g. my-org/my-repo/scripts/existing_tool.py" oninput="onToolFieldChange()"></textarea>
+            <span class="field-hint">GitHub repo path or local script to use as a starting point.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plugin (Technical + Plugin only) -->
+      <div class="conditional-section" id="pluginSection">
+        <div class="card">
+          <div class="card-header">
+            Claude Code plugin
+            <span class="badge">marketplace</span>
+          </div>
+          <div class="field-group">
+            <label>Plugin name (kebab-case)</label>
+            <input type="text" id="pluginName" placeholder="e.g. customer-health-monitor" oninput="onPluginFieldChange()">
+          </div>
+          <div class="field-group">
+            <label>Purpose</label>
+            <textarea rows="1" id="pluginPurpose" placeholder="e.g. Surface at-risk customer segments with actionable intervention options" oninput="onPluginFieldChange()"></textarea>
+          </div>
+          <div class="field-group">
+            <label>Components</label>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" id="plugCompCommands" onchange="onPluginFieldChange()"> Slash commands</label>
+              <label><input type="checkbox" id="plugCompAgents"   onchange="onPluginFieldChange()"> Agents</label>
+              <label><input type="checkbox" id="plugCompSkills"   onchange="onPluginFieldChange()"> Skills</label>
+              <label><input type="checkbox" id="plugCompHooks"    onchange="onPluginFieldChange()"> Hooks</label>
+              <label><input type="checkbox" id="plugCompMcp"      onchange="onPluginFieldChange()"> MCP server</label>
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Target marketplace</label>
+            <input type="text" id="pluginMarketplace" placeholder="e.g. anthropics/claude-code-marketplace, internal registry" oninput="onPluginFieldChange()">
+          </div>
+          <div class="field-group">
+            <label>External services (APIs the plugin connects to)</label>
+            <textarea rows="1" id="pluginServices" placeholder="e.g. OpenAI API, internal REST API, PostgreSQL" oninput="onPluginFieldChange()"></textarea>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ============================================= -->
+    <!-- PREVIEW COLUMN                                 -->
+    <!-- ============================================= -->
+    <div class="preview-col" id="previewCol" role="tabpanel" aria-labelledby="tabPreview">
+
+      <div class="card">
+        <div class="card-header">Checkpoint roadmap</div>
+        <div class="checkpoint-roadmap" id="checkpointRoadmap"></div>
+      </div>
+
+      <div class="card" style="flex:1;">
+        <div class="card-header">
+          <span>Generated output <span style="font-weight:400;color:var(--text-muted);font-size:12px" id="previewTierLabel">&mdash; Operational Builder</span></span>
+          <span class="badge" id="previewModeBadge">Prompt</span>
+        </div>
+        <div class="preview-area" id="previewArea"></div>
+      </div>
+
+      <div class="action-bar">
+        <button class="action-btn primary" onclick="copyToClipboard()">Copy</button>
+        <button class="action-btn accent" onclick="sendToClaude()" title="Open claude.ai with this prompt pre-filled">&#x2192; Send to Claude</button>
+        <button class="action-btn secondary" onclick="downloadFile()">Download .md</button>
+        <span class="copy-feedback" id="copyFeedback">Copied! Paste into Claude Code.</span>
+      </div>
+
+    </div>
+
+    <!-- ============================================= -->
+    <!-- SIGNAL COLUMN                                  -->
+    <!-- ============================================= -->
+    <div class="signal-col" id="signalCol" role="tabpanel" aria-labelledby="tabSignals">
+      <div class="card">
+        <div class="card-header">
+          <span>Signals</span>
+          <span class="badge" style="font-family:var(--mono);font-size:10px" id="signalPreviewBadge"></span>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;line-height:1.5">
+          Click to toggle. Signals are never auto-applied.
+        </div>
+        <div id="signalTiles"></div>
+        <div class="signal-preview" id="signalPreview"></div>
+        <button class="signal-info-link" onclick="openSignalDrawer()">&#9432; What do these do?</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Signal Detail Drawer -->
+  <div class="signal-drawer-backdrop" id="signalBackdrop" onclick="closeSignalDrawer()"></div>
+  <div class="signal-drawer" id="signalDrawer">
+    <div class="signal-drawer-header">
+      <h3>Signal reference</h3>
+      <button class="signal-drawer-close" onclick="closeSignalDrawer()">&times;</button>
+    </div>
+    <div id="signalDrawerContent"></div>
+  </div>
+
+</div>
+
+<!-- Mobile tab bar (hidden on desktop via CSS) -->
+<nav class="mobile-tab-bar" id="mobileTabBar" role="tablist" aria-label="Flint sections">
+  <button class="tab-btn active" data-tab="build" onclick="switchTab('build')" role="tab" aria-selected="true" aria-controls="buildCol">
+    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+    <span class="tab-label">Build</span>
+    <span class="tab-badge" id="tabBadgeBuild"></span>
+  </button>
+  <button class="tab-btn" data-tab="preview" onclick="switchTab('preview')" role="tab" aria-selected="false" aria-controls="previewCol">
+    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+    <span class="tab-label">Preview</span>
+    <span class="tab-badge" id="tabBadgePreview"></span>
+  </button>
+  <button class="tab-btn" data-tab="signals" onclick="switchTab('signals')" role="tab" aria-selected="false" aria-controls="signalCol">
+    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    <span class="tab-label">Signals</span>
+    <span class="tab-badge" id="tabBadgeSignals"></span>
+  </button>
+</nav>
+
+<script src="flint-registry.js"></script>
+<script src="flint-data.js"></script>
+<script src="flint-app.js"></script>
+<script>
+  // Register service worker for PWA (offline + installability)
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+  }
+</script>
+</body>
+</html>

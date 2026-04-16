@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="160" y1="120" x2="860" y2="920" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2C3141"/>
+      <stop offset="0.52" stop-color="#111521"/>
+      <stop offset="1" stop-color="#06090F"/>
+    </linearGradient>
+    <radialGradient id="bgGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(512 620) rotate(90) scale(300 260)">
+      <stop offset="0" stop-color="#FF7A00" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#FF7A00" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gemBase" x1="410" y1="220" x2="650" y2="780" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFE27A"/>
+      <stop offset="0.2" stop-color="#FFC125"/>
+      <stop offset="0.48" stop-color="#FF8A00"/>
+      <stop offset="1" stop-color="#B81700"/>
+    </linearGradient>
+    <linearGradient id="gemCore" x1="450" y1="330" x2="640" y2="720" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFDA3A"/>
+      <stop offset="0.38" stop-color="#FFB400"/>
+      <stop offset="0.72" stop-color="#FF5A00"/>
+      <stop offset="1" stop-color="#D71800"/>
+    </linearGradient>
+    <linearGradient id="facetLight" x1="290" y1="300" x2="480" y2="470" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFCE2"/>
+      <stop offset="1" stop-color="#F0C968"/>
+    </linearGradient>
+    <linearGradient id="facetGold" x1="610" y1="250" x2="720" y2="340" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFF1A8"/>
+      <stop offset="1" stop-color="#FFB100"/>
+    </linearGradient>
+    <linearGradient id="flameY" x1="480" y1="260" x2="480" y2="670" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFF56E"/>
+      <stop offset="0.38" stop-color="#FFE500"/>
+      <stop offset="1" stop-color="#FF8E00"/>
+    </linearGradient>
+    <linearGradient id="flameO" x1="430" y1="350" x2="430" y2="700" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFB100"/>
+      <stop offset="0.56" stop-color="#FF6400"/>
+      <stop offset="1" stop-color="#E22100"/>
+    </linearGradient>
+    <linearGradient id="flameCut" x1="628" y1="380" x2="639" y2="610" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#A53D00"/>
+      <stop offset="1" stop-color="#4E1300"/>
+    </linearGradient>
+    <filter id="iconShadow" x="190" y="170" width="650" height="680" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="26" stdDeviation="28" flood-color="#000000" flood-opacity="0.32"/>
+    </filter>
+    <filter id="outerGlow" x="180" y="190" width="680" height="690" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+    <clipPath id="clip">
+      <rect x="72" y="72" width="880" height="880" rx="220"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#clip)">
+    <rect x="72" y="72" width="880" height="880" rx="220" fill="url(#bg)"/>
+    <rect x="72" y="72" width="880" height="880" rx="220" fill="url(#bgGlow)"/>
+    <path d="M72 72H952V310C841 276 734 269 625 286C423 317 228 431 72 612V72Z" fill="#FFFFFF" fill-opacity="0.035"/>
+    <path d="M952 952H72V760C206 812 333 832 468 817C648 796 813 699 952 542V952Z" fill="#000000" fill-opacity="0.08"/>
+  </g>
+
+  <g filter="url(#outerGlow)" opacity="0.72">
+    <path d="M278 374L450 247L669 303L741 667L556 769L305 721L251 519L278 374Z" fill="#FF7A00"/>
+  </g>
+
+  <g filter="url(#iconShadow)">
+    <!-- gem -->
+    <path d="M278 374L450 247L669 303L741 667L556 769L305 721L251 519L278 374Z" fill="url(#gemBase)" stroke="#FF8A00" stroke-width="9" stroke-linejoin="round"/>
+    <path d="M320 404L465 284L630 328L693 633L540 718L339 681L292 530L320 404Z" fill="url(#gemCore)"/>
+
+    <!-- facets -->
+    <path d="M278 374L450 247L465 284L320 404L278 374Z" fill="url(#facetLight)" opacity="0.96"/>
+    <path d="M450 247L669 303L630 328L465 284L450 247Z" fill="#FFE166" opacity="0.92"/>
+    <path d="M594 262L669 303L630 328L580 286L594 262Z" fill="url(#facetGold)" opacity="0.96"/>
+    <path d="M630 328L669 303L741 667L693 633L630 328Z" fill="#8E2900" fill-opacity="0.58"/>
+    <path d="M693 633L741 667L556 769L540 718L693 633Z" fill="#5E1000" fill-opacity="0.44"/>
+    <path d="M305 721L251 519L292 530L339 681L305 721Z" fill="#621000" fill-opacity="0.42"/>
+    <path d="M339 681L540 718L556 769L305 721L339 681Z" fill="#5A0D00" fill-opacity="0.7"/>
+    <path d="M339 681L432 626L540 718L339 681Z" fill="#FF5200" fill-opacity="0.26"/>
+    <path d="M540 718L611 651L693 633L540 718Z" fill="#FFB100" fill-opacity="0.24"/>
+
+    <!-- flame -->
+    <path d="M453 330C476 402 428 440 393 477C355 517 340 570 355 617C376 682 435 716 503 713C459 691 450 643 467 607C489 557 551 530 571 471C586 425 575 382 546 343C555 411 523 460 487 497C470 451 477 396 453 330Z" fill="url(#flameO)"/>
+    <path d="M516 294C529 356 498 399 464 434C425 472 405 514 410 567C416 630 460 684 526 706C499 679 497 639 513 607C530 571 569 544 599 502C628 460 637 403 617 347C611 390 593 424 566 452C545 412 547 354 516 294Z" fill="url(#flameY)"/>
+    <path d="M596 384C613 436 611 484 589 527C569 563 540 588 513 607C530 558 542 513 558 479C575 440 589 415 596 384Z" fill="url(#flameCut)" opacity="0.9"/>
+    <path d="M345 579C374 627 427 658 495 665C541 670 583 663 622 643C585 666 513 620 473 591C436 565 396 557 345 579Z" fill="#D51B00" fill-opacity="0.48"/>
+
+    <!-- embers -->
+    <circle cx="587" cy="427" r="3.8" fill="#FFD35A"/>
+    <circle cx="622" cy="387" r="3.2" fill="#FFF3A1"/>
+    <circle cx="657" cy="458" r="2.8" fill="#FFB100"/>
+    <circle cx="360" cy="556" r="3.8" fill="#FF8A00"/>
+    <circle cx="645" cy="608" r="4.5" fill="#FF7A00"/>
+    <circle cx="690" cy="679" r="5.5" fill="#FF7A00"/>
+    <circle cx="251" cy="631" r="3.4" fill="#FFD35A"/>
+
+    <!-- ground -->
+    <path d="M506 689C575 685 623 693 679 713C662 723 651 739 639 754C586 752 526 737 506 689Z" fill="#3A1200" fill-opacity="0.46"/>
+    <ellipse cx="504" cy="732" rx="145" ry="32" fill="#000000" fill-opacity="0.22"/>
+  </g>
+
+  <rect x="74" y="74" width="876" height="876" rx="218" stroke="#FFFFFF" stroke-opacity="0.07" stroke-width="4"/>
+</svg>
